@@ -1,150 +1,65 @@
-![logo](./docs/_static/logo2.0.png)
----
 
-![PyPI - Python Version](https://img.shields.io/badge/pyhton-3.10-blue) 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/THUwangcy/ReChorus) 
-[![arXiv](https://img.shields.io/badge/arXiv-ReChorus-%23B21B1B)](https://arxiv.org/abs/2405.18058)
+# 机器学习大作业--在[ReChorus](https://github.com/THUwangcy/ReChorus)框架下复现论文：[Cross Pairwise Ranking for Unbiased Item Recommendation](https://arxiv.org/abs/2204.12176)
 
+## 具体代码：
 
-ReChorus2.0 is a modular and task-flexible PyTorch library for recommendation, especially for research purpose. It aims to provide researchers a flexible framework to implement various recommendation tasks, compare different algorithms, and adapt to diverse and highly-customized data inputs. We hope ReChorus2.0 can serve as a more convinient and user-friendly tool for researchers, so as to form a "Chorus" of recommendation tasks and algorithms.
+[./rechorus/src/models/BaseModel.py--CPRModel](https://github.com/tq3940/CPR/blob/main/rechorus/src/models/BaseModel.py#L296)：CPR基类模型，继承自general model，实现了动态采样、CPRLoss等功能
 
-The previous version of ReChorus can be found at [ReChorus1.0](https://github.com/THUwangcy/ReChorus/tree/ReChorus1.0)
+### 具体CPR模型：
 
-## What's New in ReChorus2.0:
+*  [./rechorus/src/models/general/LigthGCN.py--LightGCNCPR](https://github.com/tq3940/CPR/blob/main/rechorus/src/models/general/LightGCN.py#L162)
 
-- **New Tasks**: Newly supporting the context-aware top-k recommendation and CTR prediction task. Newly supporting the Impression-based re-ranking task.
-- **New Models**: Adding Context-aware Recommenders and Impression-based Re-ranking Models. Listed below.
-- **New dataset format**: Supporting various contextual feature input. Customizing candidate item lists in training and evaluation. Supporting variable length positive and negative samples.
-- **Task Flexible**: Each model can serve for different tasks, and task switching is conveniently achieved by altering *model mode*.
-  
+*  [./rechorus/src/models/general/CPRMF.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/models/general/CPRMF.py)
 
-This framework is especially suitable for researchers to choose or implement desired experimental settings, and compare algorithms under the same setting. The characteristics of our framework can be summarized as follows:
+* [./rechorus/src/models/sequential/ComiRec.py--ComiRecCPR](https://github.com/tq3940/CPR/blob/main/rechorus/src/models/sequential/ComiRec.py#L96)
 
-- **Modular**: primary functions modularized into distinct components: runner, model, and reader, facilitating code comprehension and integration of new features.
-  
-- **Swift**: concentrate on your model design ***in a single file*** and implement new models quickly.
+### Reader、Runner模块：
 
-- **Efficient**: multi-thread batch preparation, special implementations for the evaluation, and around 90% GPU utilization during training for deep models.
+* [./rechorus/src/helpers/CPRReader.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/helpers/CPRReader.py)
 
-- **Flexible**: implement new readers or runners for different datasets and experimental settings, and each model can be assigned with specific helpers.
-
-## Structure
-
-Generally, ReChorus decomposes the whole process into three modules:
-
-- [Reader](https://github.com/THUwangcy/ReChorus/tree/master/src/helpers/BaseReader.py): read dataset into DataFrame and append necessary information to each instance
-- [Runner](https://github.com/THUwangcy/ReChorus/tree/master/src/helpers/BaseRunner.py): control the training process and model evaluation, including evaluation metrics.
-- [Model](https://github.com/THUwangcy/ReChorus/tree/master/src/models/BaseModel.py): define how to generate output (predicted labels or ranking scores) and prepare batches.
-
-![logo](./docs/_static/module_new.png)
-
-## Requirements & Getting Started
-See in the doc for [Requirements & Getting Started](https://github.com/THUwangcy/ReChorus/tree/master/docs/Getting_Started.md).
-
-## Tasks & Settings
-
-The tasks & settings are listed below
-
-<table>
-<tr><th> Tasks </th><th> Runner </th><th> Metrics </th><th> Loss Functions</th><th> Reader </th><th> BaseModel </th><th> Models</th><th> Model Modes </th></tr>
-<tr><td rowspan="3"> Top-k Recommendation </td><td rowspan="3"> BaseRunner </td><td rowspan="3"> HitRate NDCG </td><td rowspan="3"> BPR </td><td> BaseReader </td><td> BaseModel.GeneralModel </td><td> general </td><td> '' </td></tr>
-<tr><td> SeqReader </td><td> BaseModel.SequentialModel </td><td> sequential </td><td> '' </td></tr>
-<tr><td> ContextReader </td><td> BaseContextModel.ContextModel </td><td> context </td><td> 'TopK' </td></tr>
-<tr><td> CTR Prediction </td><td> CTRRunner </td><td> AUC Logloss </td><td> BPR, BCE </td><td> ContextReader </td><td> BaseContextModel.ContextCTRModel </td><td> context </td><td> 'CTR' </td></tr>
-<tr><td rowspan="4"> Impression-based Ranking </td><td rowspan="4"> ImpressionRunner </td><td rowspan="4"> HitRate NDCG MAP </td><td rowspan="4"> List-level BPR, Listnet loss, Softmax cross entropy loss, Attention rank </td><td> ImpressionReader </td><td> BaseImpressionModel.ImpressionModel </td><td> general </td><td> 'Impression' </td></tr>
-<tr><td> ImpressionSeqReader </td><td> BaseImpressionModel.ImpressionSeqModel </td><td> sequential </td><td> 'Impression' </td></tr>
-<tr><td> ImpressionReader </td><td> BaseRerankerModel.RerankModel </td><td> reranker </td><td> 'General' </td></tr>
-<tr><td> ImpressionSeqReader </td><td> BaseRerankerModel.RerankSeqModel </td><td> reranker </td><td> 'Sequential' </td></tr>
-</table>
+* [./rechorus/src/helpers/CPRRunner.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/helpers/CPRRunner.py)
 
 
-## Arguments
-See in the doc for [Main Arguments](https://github.com/THUwangcy/ReChorus/tree/master/docs/Main_Arguments.md).
+## 其他文件：
 
-## Models
-See in the doc for [Supported Models](https://github.com/THUwangcy/ReChorus/tree/master/docs/Supported_Models.md).
+[train_log](https://github.com/tq3940/CPR/tree/main/train_log)：训练过程日志记录
 
-Experimental results and corresponding configurations are shown in [Demo Script Results](https://github.com/THUwangcy/ReChorus/tree/master/docs/demo_scripts_results/README.md).
+[epoch_metrics](https://github.com/tq3940/CPR/tree/main/epoch_metrics)：训练过程在验证集上NDCG@2指标导出记录
 
+[eval_log](https://github.com/tq3940/CPR/tree/main/eval_log)：评测过程日志记录
 
-## Citation
+[model](https://github.com/tq3940/CPR/tree/main/model)：已训练模型
 
-**If you find ReChorus is helpful to your research, please cite either of the following papers. Thanks!**
+test：评测用代码
+    
+* [count_train_set_items.py](https://github.com/tq3940/CPR/blob/main/test/count_test_rec_items.py)：对每个数据集的训练集分组
 
-```
-@article{li2024rechorus2,
-  title={ReChorus2. 0: A Modular and Task-Flexible Recommendation Library},
-  author={Li, Jiayu and Li, Hanyu and He, Zhiyu and Ma, Weizhi and Sun, Peijie and Zhang, Min and Ma, Shaoping},
-  journal={arXiv preprint arXiv:2405.18058},
-  year={2024}
-}
+* [sample_test_set.py](https://github.com/tq3940/CPR/blob/main/test/sample_test_set.py)：对原测试集重采样，形成新测试集（./rechorus/eval_data）
 
-@inproceedings{wang2020make,
-  title={Make it a chorus: knowledge-and time-aware item modeling for sequential recommendation},
-  author={Wang, Chenyang and Zhang, Min and Ma, Weizhi and Liu, Yiqun and Ma, Shaoping},
-  booktitle={Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval},
-  pages={109--118},
-  year={2020}
-}
-@article{王晨阳2021rechorus,
-  title={ReChorus: 一个综合, 高效, 易扩展的轻量级推荐算法框架},
-  author={王晨阳 and 任一 and 马为之 and 张敏 and 刘奕群 and 马少平},
-  journal={软件学报},
-  volume={33},
-  number={4},
-  pages={0--0},
-  year={2021}
-}
-```
+* [count_test_rec_items.py](https://github.com/tq3940/CPR/blob/main/test/count_test_rec_items.py)：对模型在测试集上推荐结果前10计数
 
-This is also our public implementation for the following papers (codes and datasets to reproduce the results can be found at corresponding branch):
+* [test_rec_items_distribution.py](https://github.com/tq3940/CPR/blob/main/test/test_rec_items_distribution.py)：统计测试结果中每一组分布
 
 
-- *Chenyang Wang, Min Zhang, Weizhi Ma, Yiqun Liu, and Shaoping Ma. [Make It a Chorus: Knowledge- and Time-aware Item Modeling for Sequential Recommendation](http://www.thuir.cn/group/~mzhang/publications/SIGIR2020Wangcy.pdf). In SIGIR'20.*
+* [extract_epoch_metrics.py](https://github.com/tq3940/CPR/blob/main/test/extract_epoch_metrics.py)：导出训练过程每一轮指标
 
-```bash
-git clone -b SIGIR20 https://github.com/THUwangcy/ReChorus.git
-```
+* [extract_final_metrics.py](https://github.com/tq3940/CPR/blob/main/test/extract_final_metrics.py)：导出模型在测试集上评估指标
 
-- *Chenyang Wang, Weizhi Ma, Min Zhang, Chong Chen, Yiqun Liu, and Shaoping Ma. [Towards Dynamic User Intention: Temporal Evolutionary Effects of Item Relations in Sequential Recommendation](https://chenchongthu.github.io/files/TOIS-KDA-wcy.pdf). In TOIS'21.*
 
-```bash
-git clone -b TOIS21 https://github.com/THUwangcy/ReChorus.git
-```
+[eval_result](https://github.com/tq3940/CPR/tree/main/eval_result)：模型在测试集上评估指标及推荐结果的分布
 
-- *Chenyang Wang, Weizhi Ma, Chong, Chen, Min Zhang, Yiqun Liu, and Shaoping Ma. [Sequential Recommendation with Multiple Contrast Signals](https://dl.acm.org/doi/pdf/10.1145/3522673). In TOIS'22.*
 
-```bash
-git clone -b TOIS22 https://github.com/THUwangcy/ReChorus.git
-```
+[./rechorus/data](https://github.com/tq3940/CPR/tree/main/rechorus/data)：训练用数据集
 
-- *Chenyang Wang, Zhefan Wang, Yankai Liu, Yang Ge, Weizhi Ma, Min Zhang, Yiqun Liu, Junlan Feng, Chao Deng, and Shaoping Ma. [Target Interest Distillation for Multi-Interest Recommendation](). In CIKM'22.*
+[./rechorus/eval_data](https://github.com/tq3940/CPR/tree/main/rechorus/eval_data)：重采样后用来评测的数据集
 
-```bash
-git clone -b CIKM22 https://github.com/THUwangcy/ReChorus.git
-```
+[./rechorus/run_script](https://github.com/tq3940/CPR/tree/main/rechorus/run_script)：训练用脚本文件（liunx端 使用GPU）
 
-## Contact
+[./rechorus/eval_script](https://github.com/tq3940/CPR/tree/main/rechorus/eval_script)：测试用脚本文件（win端 使用CPU）
 
-**ReChorus 1.0**: Chenyang Wang (THUwangcy@gmail.com)
+[./rechorus/src/main.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/main.py)：训练主函数
 
-**ReChorus 2.0**: Jiayu Li (lijiayu997@gmail.com), Hanyu Li (l-hy12@outlook.com)
+[./rechorus/src/main_CPU.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/main_CPU.py)：训练主函数 使用CPU
 
-<!-- MARKDOWN LINKS & IMAGES -->
+[./rechorus/src/eval_CPU.py](https://github.com/tq3940/CPR/blob/main/rechorus/src/eval_CPU.py)：评测主函数 使用CPU
 
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
