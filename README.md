@@ -7,7 +7,7 @@
 
 ### 具体CPR模型：
 
-*  [./src/models/general/CPRLigthGCN.py--CPRLightGCNCPR](https://github.com/BinshengQin/Rechorus-master/blob/main/src/models/general/CPRLightGCN.py): 继承自(LightGCNBase, GeneralModel), 定义实现了CPR损失，并在嵌套类Dataset中实现了CPR损失相关动态采样算法
+*  [./src/models/general/CPRLigthGCN.py--CPRLightGCN](https://github.com/BinshengQin/Rechorus-master/blob/main/src/models/general/CPRLightGCN.py): 继承自(LightGCNBase, GeneralModel), 定义实现了CPR损失，并在嵌套类Dataset中实现了CPR损失相关动态采样算法
 
 ### 具体Reader、Runner模块：
 
