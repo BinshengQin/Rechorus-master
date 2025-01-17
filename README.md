@@ -11,6 +11,6 @@
 
 ### 具体Reader、Runner模块：
 
-* [./src/helpers/CPRReader.py](https://github.com/BinshengQin/Rechorus-master/src/helpers/CPRReader.py)：实现了对数据集读取和处理，为训练做准备
+* [./src/helpers/CPRReader.py](https://github.com/BinshengQin/Rechorus-master/blob/main/src/helpers/CPRReader.py)：实现了对数据集读取和处理，为训练做准备
 
-* [./src/helpers/CPRRunner.py](https://github.com/BinshengQin/Rechorus-master/src/helpers/CPRRunner.py)：继承自BaseRunner, 实现了训练过程的控制
+* [./src/helpers/CPRRunner.py](https://github.com/BinshengQin/Rechorus-master/blob/main/src/helpers/CPRRunner.py)：继承自BaseRunner, 实现了训练过程的控制
