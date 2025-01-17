@@ -14,3 +14,43 @@
 * [./src/helpers/CPRReader.py](https://github.com/BinshengQin/Rechorus-master/blob/main/src/helpers/CPRReader.py)：实现了对数据集读取和处理，为训练做准备
 
 * [./src/helpers/CPRRunner.py](https://github.com/BinshengQin/Rechorus-master/blob/main/src/helpers/CPRRunner.py)：继承自BaseRunner, 实现了训练过程的控制
+
+## 实验结果复现
+
+若要复现我们报告中的实验结果，请运行以下命令
+
+### Grocery_and_Gourmet_Food数据集下复现
+
+#### CPRLightGCN
+
+```shell
+python src\main.py --model_name CPRLightGCN  --num_workers 0 --batch_size 128 
+```
+#### LightGCN
+
+```shell
+python src\main.py --model_name LightGCN  --num_workers 0 --batch_size 128 
+```
+#### NeuMF
+
+```shell
+python src\main.py --model_name NeuMF  --num_workers 0 --batch_size 128 
+```
+
+### ML_1MTOPK数据集下复现
+
+#### CPRLightGCN
+
+```shell
+python src\main.py --model_name CPRLightGCN  --num_workers 0 --batch_size 512 --dataset MovieLens_1M/ML_1MTOPK 
+```
+#### LightGCN
+
+```shell
+python src\main.py --model_name LightGCN  --num_workers 0 --batch_size 512 --dataset MovieLens_1M/ML_1MTOPK 
+```
+#### NeuMF
+
+```shell
+python src\main.py --model_name NeuMF  --num_workers 0 --batch_size 512 --dataset MovieLens_1M/ML_1MTOPK 
+```
